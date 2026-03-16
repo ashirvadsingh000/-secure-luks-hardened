@@ -102,6 +102,40 @@ sudo ./secure-luks-hardened.sh create --dry-run
 
 ---
 
+## 📝 Documentation: System Paths & Artifacts Section
+
+### Overview
+This section documents the system paths and artifacts used throughout the secure LUKS hardened setup.
+
+### ⚠️ Critical: Disk Name Selection
+
+**Importance:** Selecting the correct disk name is crucial and a major issue. Selecting the wrong disk will result in data loss on that disk.
+
+### 🔍 How to Find Your Disk Name
+
+1. **List all disks:**
+    ```bash
+    lsblk
+    ```
+    or
+    ```bash
+    sudo fdisk -l
+    ```
+
+2. **Identify your target disk:**
+    - Look for disk size matching your intended LUKS target
+    - Note the device name (e.g., `/dev/sda`, `/dev/nvme0n1`, `/dev/sdb`)
+    - **Verify twice** before proceeding
+
+3. **Common disk naming conventions:**
+    - SATA/USB: `/dev/sd[a-z]` (sda, sdb, sdc, etc.)
+    - NVMe: `/dev/nvme[0-9]n[0-9]` (nvme0n1, nvme1n1, etc.)
+    - Loop devices: `/dev/loop[0-9]`
+
+### 📍 Where to Place the Disk Name
+
+The disk name variable should be defined at the beginning of your configuration/scripts:
+
 ## 📂 System Paths & Artifacts
 
 | Path | Purpose | Permissions |
