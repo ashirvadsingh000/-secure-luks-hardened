@@ -1,5 +1,7 @@
 # 🔐 secure-luks-hardened
 
+☢️ Critical Warning — Disk Selection is a One-Way Operation
+
 ## Enterprise-Grade LUKS Disk Encryption Automation Script
 
 A production-ready Bash script for secure creation, management, and automated mounting of encrypted disk volumes using LUKS2 with Argon2id key derivation, hardware-backed keyfile authentication, and systemd integration.
