@@ -1,0 +1,45 @@
+┌──(ashirvad㉿kali)-[~/Desktop]
+└─$ sudo ./secure-luks-hardened.sh create --dry-run
+[sudo] password for ashirvad:
+🚨 THIS WILL ERASE:
+NAME                          MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINTS
+sdb                             8:16   0 298.1G  0 disk
+└─sdb1                          8:17   0 298.1G  0 part
+  └─luks-f5fcadd0-e80e-4dff-87c1-43cbec7fc3d2
+                              254:0    0 298.1G  0 crypt /run/media/ashirvad/SecureData
+
+Type ERASE to continue: ERASE
+[DRY-RUN] apt update
+[DRY-RUN] apt install -y cryptsetup exfatprogs util-linux
+▶ Wiping signatures
+[DRY-RUN] wipefs -a /dev/sdb
+▶ Partitioning disk
+[DRY-RUN] parted -s /dev/sdb mklabel gpt
+[DRY-RUN] parted -s /dev/sdb mkpart primary 0% 100%
+g🔑 Enter LUKS password (hidden — normal)
+Password:
+🔑 Enter LUKS password (hidden — normal)
+Password:
+▶ Generating keyfile
+[DRY-RUN] mkdir -p /root/.keys
+[DRY-RUN] dd if=/dev/urandom of=/root/.keys/secureHDD.key bs=4096 count=1
+[DRY-RUN] chmod 0400 /root/.keys/secureHDD.key
+▶ Creating hardened LUKS2 container
+[DRY-RUN] echo -n 'guruji11' | cryptsetup luksFormat /dev/sdb1     --type luks2     --pbkdf argon2id     --pbkdf-memory 1048576     --pbkdf-parallel 4     --pbkdf-force-iterations 6     --key-file=-
+▶ Adding keyfile as second factor
+[DRY-RUN] echo -n 'guruji11' | cryptsetup luksAddKey /dev/sdb1 /root/.keys/secureHDD.key -
+[DRY-RUN] cryptsetup open /dev/sdb1 secureHDD --key-file /root/.keys/secureHDD.key
+▶ Formatting filesystem
+[DRY-RUN] mkfs.exfat /dev/mapper/secureHDD -n SecureData
+▶ Mounting volume
+[DRY-RUN] mkdir -p /mnt/secure
+[DRY-RUN] mount /dev/mapper/secureHDD /mnt/secure
+grep: /etc/crypttab: No such file or directory
+▶ Updating /etc/crypttab
+[DRY-RUN] echo 'secureHDD UUID=f5fcadd0-e80e-4dff-87c1-43cbec7fc3d2 /root/.keys/secureHDD.key luks' >> /etc/crypttab
+▶ Updating /etc/fstab
+[DRY-RUN] echo '/dev/mapper/secureHDD /mnt/secure exfat defaults 0 0' >> /etc/fstab
+✅ CREATE COMPLETE
+
+┌──(ashirvad㉿kali)-[~/Desktop]
+└─$

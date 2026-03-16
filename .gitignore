@@ -1,0 +1,15 @@
+# Linux temp
+*.log
+*.tmp
+*.swp
+
+# Keys (IMPORTANT 🔥)
+*.key
+/root/.keys/
+
+# Node (if future scaling)
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
